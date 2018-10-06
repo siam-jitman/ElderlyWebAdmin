@@ -82,6 +82,7 @@ export default {
   computed: {},
   created() {
     sessionStorage.clear();
+    sessionStorage.setItem("memberId","1");
   }
 };
 </script>

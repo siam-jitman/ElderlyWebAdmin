@@ -4,6 +4,7 @@ import Router from 'vue-router'
 import Test from '../page/Test/Test';
 import Login from '../page/Login/Login';
 import Logout from '../page/Logout/Logout';
+import Content from '../page/Content/Content.vue';
 
 Vue.use(Router)
 
@@ -23,5 +24,9 @@ export default new Router({
     path: '/Logout',
     name: 'Logout',
     component: Logout
+  }, {
+    path: '/Content',
+    name: 'Content',
+    component: Content
   }]
 })

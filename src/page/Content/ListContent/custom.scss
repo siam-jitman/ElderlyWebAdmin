@@ -1,0 +1,31 @@
+
+table.table-ListAdapter {
+  margin: 0px;
+  border: 1px solid #c2c2c2;
+}
+
+table.table-ListAdapter>thead {
+  width: calc(100%);
+  background: #cecece;
+}
+
+table.table-ListAdapter>tbody {
+  height: calc(100vh - 230px);
+  overflow-x: none;
+  overflow-y: auto;
+  width: calc(100%);
+}
+
+table.table-ListAdapter>thead,
+table.table-ListAdapter>tbody,
+table.table-ListAdapter>tbody>tr,
+  {
+  border: none;
+  display: block;
+}
+
+table.table-ListAdapter>tbody td,
+table.table-ListAdapter>thead>tr>th {
+  border: none;
+  display: inline-block;
+}

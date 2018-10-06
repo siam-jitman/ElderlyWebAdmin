@@ -15,11 +15,12 @@ function globalHeader() {
 
 function createBodyParams(body) {
   return {
-    requestData: Object.assign({
-      tokenKey: storageUtil.sessionStorage.getSession('bm_tokenKey'),
-      uidKey: storageUtil.sessionStorage.getSession('bm_uidKey'),
-      deviceKey: storageUtil.sessionStorage.getSession('bm_deviceKey')
-    }, body)
+    // requestBody: Object.assign({
+    //   tokenKey: storageUtil.sessionStorage.getSession('bm_tokenKey'),
+    //   uidKey: storageUtil.sessionStorage.getSession('bm_uidKey'),
+    //   deviceKey: storageUtil.sessionStorage.getSession('bm_deviceKey')
+    // }, body)
+    requestBody: body
   };
 }
 /**
@@ -105,40 +106,20 @@ function validateResponse(request, doSuccess, doFailed, doCatch) {
 
         // uiUtil.bus.post(constantUtil.EVENT.COMMMON.GLOBALLOADED);
 
-        const success = response.data.responseData.resultSuccess;
-        const responseHeader = response.data.responseHeader;
-        if (responseHeader.responseCode == '0000I') {
-          console.log(TAG + "doSuccess", response);
-          doSuccess(response);
+        const success = response.data.resultSuccess;
+        const resultMessage = response.data.resultMessage;
+        if (success) {
+          console.log(TAG + "doSuccess response.data => ", response.data);
+          doSuccess(response.data);
         } else {
-
-
-          if (responseHeader.responseCode == '3004E' || responseHeader.responseCode == '3005E' || responseHeader.responseCode == '3003E') {
-            console.log(TAG + "doExpired", responseHeader.responseDescription);
-            uiUtil.error.serviceExpired(responseHeader.responseCode, responseHeader.responseDescription);
-          } else if (responseHeader.responseCode == '6004E' || responseHeader.responseCode == '6005E' || responseHeader.responseCode == '6006E' || responseHeader.responseCode == '8006E' || responseHeader.responseCode == '6007E') {
-            console.log(TAG + "doFailed", responseHeader.responseDescription);
+          if (doFailed != undefined) {
+            doFailed(response);
+          } else {
+            console.log(TAG + "doFailed", resultMessage);
             uiUtil.bus.post(
               constantUtil.EVENT.SHOW_ALERT_DIALOG,
-              responseHeader.responseDescription
+              resultMessage
             );
-          } else {
-            if (doFailed != undefined && _.isFunction(doFailed)) {
-              console.log(TAG + "doFailed", response);
-              doFailed(response);
-            } else {
-              console.log(TAG + "doFailed auto function", response);
-              var message;
-              if (_.isEmpty(responseHeader.responseDescription)) {
-                message = "Please contact admin.";
-              } else {
-                message = responseHeader.responseDescription;
-              }
-              uiUtil.bus.post(
-                constantUtil.EVENT.SHOW_ALERT_DIALOG,
-                message
-              );
-            }
           }
         }
       }

@@ -23,28 +23,30 @@ export default {
   methods: {
     // function call service
     requestLogout() {
-      console.log(TAG + "requestLogout start");
+      this.$router.push("./");
 
-      let that = this;
+      // console.log(TAG + "requestLogout start");
 
-      uiUtil.bus.post(constantUtil.EVENT.COMMMON.GLOBALLOADING);
-      const bodyParams = {};
-      const call = apiUtil.callService.doPost(
-        globalUtil.SERVICES.URL_LOGOUT,
-        bodyParams
-      );
+      // let that = this;
 
-      apiUtil.callService.validateResponse(call, function(response) {
-        let responseContent = response.data;
-        console.log(
-          TAG + "response => " + globalUtil.SERVICES.URL_LOGOUT + " => ",
-          responseContent
-        );
-        // process after validateResponse
-        that.$router.push("./");
-        // end process after validateResponse
-        console.log(TAG + "requestLogout success");
-      });
+      // uiUtil.bus.post(constantUtil.EVENT.COMMMON.GLOBALLOADING);
+      // const bodyParams = {};
+      // const call = apiUtil.callService.doPost(
+      //   globalUtil.SERVICES.URL_LOGOUT,
+      //   bodyParams
+      // );
+
+      // apiUtil.callService.validateResponse(call, function(response) {
+      //   let responseContent = response.data;
+      //   console.log(
+      //     TAG + "response => " + globalUtil.SERVICES.URL_LOGOUT + " => ",
+      //     responseContent
+      //   );
+      //   // process after validateResponse
+      //   // that.$router.push("./");
+      //   // end process after validateResponse
+      //   console.log(TAG + "requestLogout success");
+      // });
     }
   },
   computed: {},
