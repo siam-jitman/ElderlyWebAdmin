@@ -1,121 +1,61 @@
-const listStory_fields = [{
-    label: " ",
-    key: "checkList",
-    class: "chk"
+const category = [{
+    value: null,
+    text: "กรุณาเลือกหมวดหมู่ของเนื้อหา",
+    disabled: true
   },
   {
-    label: " ",
-    key: "viewStory",
-    class: "chk"
+    value: "1",
+    text: "แอนิเมชัน (Animation)"
   },
   {
-    label: "Storyboard Name",
-    key: "storyName",
-    class: "storyName",
-    sortable: true
+    value: "2",
+    text: "การ์ตูน (Cartoon)"
   },
   {
-    label: "Remark",
-    key: "remark"
+    value: "4",
+    text: "หนังสืออิเล็กทรอนิกส์ (Electronic book)"
   },
   {
-    label: "Last Updated",
-    key: "lastUpdate",
-    class: "last"
+    value: "5",
+    text: "อินโฟกราฟิก (Infographics)"
   },
   {
-    label: "Last Publish",
-    key: "lastPublish",
-    class: "last"
+    value: "6",
+    text: "เทคโนโลยีเออาร์ (Augmentation reality technology)"
+  },
+  {
+    value: "7",
+    text: "โมชั่นกราฟิก (Motiongraphics)"
+  },
+  {
+    value: "8",
+    text: "วีดิทัศน์ (Video)"
+  },
+  {
+    value: "9",
+    text: "ภาพมุมมองสามมิติ (3D perspective image)"
   }
-  // ,
-  // {
-  //   label: "Status",
-  //   key: "status",
-  //   class: "status"
-  // }
-  // ,
-  // {
-  //   label: " ",
-  //   key: "ready",
-  //   class: "ready p-tb"
-  // }
-  ,
-  {
-    label: "Delete",
-    key: "delete",
-    class: "tdDelete"
-  }
-];
+]
 
-const listScreen_fields = [{
-    label: " ",
-    key: "checkList",
-    class: "chk"
-  },
-  {
-    label: " ",
-    key: "viewScreen",
-    class: "chk"
-  },
-  {
-    label: "Storyboard Name",
-    key: "storyName",
-    class: "storyName",
-    sortable: true
-  },
-  {
-    label: "Remark",
-    key: "remark"
-  }
-];
-
-const listApplication_fields = [{
-    label: " ",
-    key: "view",
-    class: "chk"
-  },
-  {
-    label: "Application Name",
-    key: "entityName",
-    class: "storyName"
-  },
-  {
-    label: "Story Name",
-    key: "storyName",
-    class: "storyName"
-  },
-  {
-    label: "Last Updated",
-    key: "lastUpdate",
-    class: "last"
-  },
-  {
-    label: "Version",
-    key: "version",
-    class: "status"
-  },
-  {
-    label: "Last Publish",
-    key: "lastPublish",
-    class: "last"
-  },
-  {
-    label: "Status",
-    key: "status",
-    class: "status"
-  },
-  {
-    label: "Publish Status",
-    key: "publishStatus",
-    class: "last"
-  }
-];
+const activeStatus = [{
+  value: "0",
+  text: "รอการอนุมัติการเพิ่มข้อมูล"
+}, {
+  value: "1",
+  text: "รอการอนุมัติการแก้ไขข้อมูล"
+}, {
+  value: "2",
+  text: "รอการอนุมัติการลบข้อมูล"
+}, {
+  value: "3",
+  text: "อนุมัติการแสดงข้อมูล"
+}]
 
 const message_error = {
   MSG_ERROR_START_DATE_END_DATE_TRANSACTION_LOG: "Start Time must less than End Time.",
   COMMON: {
-    MSG_REQUIRED: 'Please fill in all input.',
+    MSG_REQUIRED: 'ข้อมูลที่กรอกไม่ถูกต้อง หรือไม่ครบถ้วน',
+    MSG_REQUIRED_URL: 'กรุณากรอก Url ให้ถูกต้อง',
     MSG_ERROR_UPLOAD_IMAGE: 'The upload file can be only .jpg and .png',
     MSG_PLEASE_SELECT_ITEM: 'Please select the item that you want.'
   },
@@ -127,20 +67,22 @@ const message_error = {
 const message_success = {
   MSG_UPDATE_PASSWORD_SUCCESS: 'Password Updated.'
 }
+const message_confirm_header = {
+  MSG_CONFIRM_ADD_CONTENT: "ยืนยันการบันทึกข้อมูล"
+};
 
 const message_confirm = {
   MSG_CONFIRM_DELETE_MENU_LIST: "Do you want to delete this menu?",
   MSG_CONFIRM_DELETE_CONFIGURATION: "Do you want to delete this configuration?",
-  MSG_CONFIRM_DELETE_ADAPTERBOT: "Do you want to delete this bot adapter?"
+  MSG_CONFIRM_DELETE_ADAPTERBOT: "Do you want to delete this bot adapter?",
+  MSG_CONFIRM_ADD_CONTENT: "เมื่อบันทึกข้อมูลแล้วจะไม่สามารถแก้ไขได้ จนกว่าผู้ดูแลระบบจะอนุมัติการแสดงข้อมูล"
 };
 
 export default {
-  listStory_fields: listStory_fields,
-  listScreen_fields: listScreen_fields,
-  listApplication_fields: listApplication_fields,
-  isCollapseTransactionServiceGateway: true,
-  isCollapseTransactionDMA: true,
+  CATEGORY: category,
+  ACTIVE_STATUS: activeStatus,
   MSG_ERROR: message_error,
   MSG: message_success,
-  MSG_CONFIRM: message_confirm
+  MSG_CONFIRM: message_confirm,
+  MSG_CONFIRM_HEADER: message_confirm_header
 }

@@ -54,6 +54,19 @@ function doPost(url, body, headers) {
   return bus.axios.post(url, createBodyParams(body), setHeaders);
 }
 
+/**
+ * Function doPost() Api
+ * @param {string} url
+ * @param {object} body
+ * @param {object} headers
+ *
+ * @return Promise
+ */
+function doPostFormData(url, body) {
+  let setHeaders = {};
+  return bus.axios.post(url, body, {'Content-Type': 'multipart/form-data' });
+}
+
 
 /**
  * Function doPost() Api
@@ -155,5 +168,6 @@ export default {
   checkSuccessStatus: checkSuccessStatus,
   validateResponse: validateResponse,
   getResponseData: getResponseData,
-  doPost_DefaultBody: doPost_DefaultBody
+  doPost_DefaultBody: doPost_DefaultBody,
+  doPostFormData: doPostFormData
 }

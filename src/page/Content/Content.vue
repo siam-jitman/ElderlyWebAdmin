@@ -24,6 +24,7 @@ import validateUtil from "../../common/validateUtil/index";
 
 import ListContent from "./ListContent/ListContent.vue";
 
+
 export default {
   props: {},
   components: {
@@ -31,7 +32,7 @@ export default {
   },
   data() {
     return {
-      listAdapterBOT: [],
+      listAdapterBOT: []
     };
   },
   methods: {
@@ -46,7 +47,7 @@ export default {
 
       uiUtil.bus.post(constantUtil.EVENT.COMMMON.GLOBALLOADING);
       const bodyParams = {
-        idMember: sessionStorage.getItem("memberId")
+        idMember: this.$store.getters.getMemberData.idMember
       };
       const call = apiUtil.callService.doPost(
         globalUtil.SERVICES.CONTENT.URL_FIND_CONTENT_BI_ID_MEMBER,
@@ -65,8 +66,26 @@ export default {
     }
   },
   computed: {},
+  beforeCreate() {
+    // let dataMember = storageUtil.sessionStorage.getSession("dataMember");
+    // console.log(dataMember);
+    // if (dataMember == "" || dataMember == undefined) {
+    //   this.$router.push("./");
+    // }else{
+    // this.requestListContent();
+    // }
+  },
   created() {
-    this.requestListContent();
+    let memberData = this.$store.getters.getMemberData;
+    console.log(
+      TAG + "created() => this.$store.getters.getMemberData => ",
+      memberData
+    );
+    if (memberData == null) {
+      this.$router.push("/");
+    } else {
+      this.requestListContent();
+    }
   }
 };
 </script>

@@ -1,5 +1,6 @@
 @import "~bootstrap/scss/bootstrap.scss";
 @import "bootstrap-variable-override";
+@import "ck-editor-override";
 // @font-face {
 //   font-family: 'Cordia';
 //   src: url("~@/assets/fonts/cordia.ttf");
@@ -31,3 +32,4 @@
 .pointer {
   cursor: pointer;
 }
+

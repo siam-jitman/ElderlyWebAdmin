@@ -12,10 +12,10 @@
                     <b-row style="margin-top: 15px;">
                       <b-col align="right">
 
-                    <b-btn class="gray" @click.stop.prevent="onClickCancel">Cancel</b-btn>
+                    <b-btn class="gray" @click.stop.prevent="onClickCancel">ยกเลิก</b-btn>
                       </b-col>
                       <b-col align="left">
-                    <b-btn class="blue" @click.stop.prevent="onClickConfirm">Confirm</b-btn></b-col>
+                    <b-btn class="blue" @click.stop.prevent="onClickConfirm">ยืนยัน</b-btn></b-col>
                     <!-- <button class="blue" @click.stop.prevent="closeDialog" style="display: block; margin: 0 auto;width:80px;">OK</button> -->
                     </b-row>
                   </div>

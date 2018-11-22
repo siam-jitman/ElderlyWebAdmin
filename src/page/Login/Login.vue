@@ -43,7 +43,7 @@ export default {
       username: "",
       password: "",
       txtUsernameIsInvalid: false,
-      txtPasswordIsInvalid: false,
+      txtPasswordIsInvalid: false
     };
   },
   methods: {
@@ -73,17 +73,54 @@ export default {
         e.preventDefault();
         console.log(TAG + "btnSubmitLogin => ", "start btnSubmitLogin");
 
-        // this.requestLogin();
+        this.requestLogin();
 
         console.log(TAG + "btnSubmitLogin => ", "end btnSubmitLogin");
       }
+    },
+    // function call service
+    requestLogin() {
+      console.log(TAG + "requestLogin start");
+
+      let that = this;
+
+      uiUtil.bus.post(constantUtil.EVENT.COMMMON.GLOBALLOADING);
+      const bodyParams = {
+        username: this.username,
+        password: this.password
+      };
+      const call = apiUtil.callService.doPost(
+        globalUtil.SERVICES.URL_LOGIN,
+        bodyParams
+      );
+
+      apiUtil.callService.validateResponse(
+        call,
+        function(response) {
+          let responseContent = response;
+          console.log(
+            TAG + "response => " + globalUtil.SERVICES.URL_LOGIN + " => ",
+            responseContent
+          );
+          // process after validateResponse
+
+          this.$store.dispatch("saveMemberData", responseContent.resultData);
+          storageUtil.sessionStorage.setSession("memberData", responseContent.resultData);
+          // sessionStorage.setItem("memberData", responseContent.resultData);
+
+          this.$router.push("./Content");
+
+          // end process after validateResponse
+          console.log(TAG + "requestLogin success");
+        }.bind(this)
+      );
     }
   },
   computed: {},
-  created() {
-    sessionStorage.clear();
-    sessionStorage.setItem("memberId","1");
-  }
+  beforeCreate() {
+    this.$store.dispatch("removeMemberData");
+  },
+  created() {}
 };
 </script>
 

@@ -4,16 +4,56 @@
       <b-row style="padding: 5px;">
         <b-col md="4">
           <b-input-group>
-            <b-form-input v-model="filter" placeholder="Filter" class="filter" maxlength="255" />
+            <b-form-input v-model="filter" placeholder="กรองด้วยชื่อ หรือประเภทของเนื้อหา" class="filter" maxlength="255" />
             <b-input-group-append>
-              <b-btn :disabled="!filter" @click="filter = ''">Clear</b-btn>
+              <b-btn variant="default" :disabled="!filter" @click="filter = ''">Clear</b-btn>
             </b-input-group-append>
           </b-input-group>
+        </b-col>
+        <b-col align="right">
+          <router-link :to="'/Content/CreateUpdateContent'">
+            <b-btn class="blue">
+              <font-awesome-icon :icon="['fas','plus-circle']" />
+              เพิ่ม
+            </b-btn>
+          </router-link>
+          <b-btn class="gray">
+            <font-awesome-icon :icon="['fas','minus-circle']" />
+            ลบ
+          </b-btn>
         </b-col>
       </b-row>
     </div>
     <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection" @filtered="onFiltered" :no-sort-reset="true" class="table-ListAdapter table-striped">
+      <!-- <template slot="HEAD_checkList" slot-scope="head">
+        <input type="checkbox" @click.stop.prevent="clickSeletedAll(head)" v-model="allSelected">
+      </template> -->
 
+      <template slot="checkList" slot-scope="data">
+        <input type="checkbox" v-show="data.item.activeStatus == 3" v-model="data.item.checkList" @change.stop.prevent="clickCbb(data.item.checkList)">
+      </template>
+
+      <template slot="btnViewContent" slot-scope="data">
+        <font-awesome-icon :icon="['fas','edit']" class="pointer" @click.stop.prevent="onClickBtnViewContent(data.item)" />
+      </template>
+
+      <template slot="idCategory" slot-scope="data">
+        <p v-b-tooltip.hover :title="setShowCategory(data.item.idCategory)">{{setShowCategory(data.item.idCategory)}}</p>
+        <!-- {{setShowCategory(data.item.idCategory)}} -->
+      </template>
+
+      <template slot="activeStatus" slot-scope="data">
+        <p v-b-tooltip.hover :title="setShowActiveStatus(data.item.activeStatus)">{{setShowActiveStatus(data.item.activeStatus)}}</p>
+        <!-- {{setShowCategory(data.item.idCategory)}} -->
+      </template>
+      <template slot="createTime" slot-scope="data">
+        <!-- <p v-b-tooltip.hover :title="setShowDate(data.item.createTime)">{{setShowDate(data.item.createTime)}}</p> -->
+        {{setShowDate(data.item.createTime)}}
+      </template>
+      <template slot="updateTime" slot-scope="data">
+        <!-- <p v-b-tooltip.hover :title="setShowDate(data.item.updateTime)">{{setShowDate(data.item.updateTime)}}</p> -->
+        {{setShowDate(data.item.updateTime)}}
+      </template>
     </b-table>
 
     <b-row v-if="totalRows > 0" style="padding: 5px; border: 1px solid #c2c2c2; margin: auto; margin-top: -1px;">
@@ -39,12 +79,17 @@ import dataUtil from "../../../common/dataUtil/index";
 import storageUtil from "../../../common/storageUtil/index";
 import validateUtil from "../../../common/validateUtil/index";
 
+import moment from "moment";
+moment.locale("th");
+
 import "./custom.scss";
 
 export default {
   props: {},
   data() {
     return {
+      category: globalUtil.VARIABLES.CATEGORY,
+      activeStatus: globalUtil.VARIABLES.ACTIVE_STATUS,
       start: 0,
       end: 0,
       allSelected: false,
@@ -63,13 +108,13 @@ export default {
         },
         {
           label: " ",
-          key: "btnViewBOTConfig",
+          key: "btnViewContent",
           class: "td-3 td-center"
         },
         {
           label: "ชื่อเนื้อหา",
           key: "nameContent",
-          class: "td-35",
+          class: "td-32",
           sortable: true
         },
         {
@@ -77,16 +122,17 @@ export default {
           key: "idCategory",
           class: "td-20",
           sortable: true
-        },,
+        },
+        ,
         {
           label: "วันที่สรา้งข้อมูล",
           key: "createTime",
-          class: "td-10 td-center"
+          class: "td-12 td-center"
         },
         {
           label: "วันที่แก้ไขข้อมูลล่าสุด",
           key: "updateTime",
-          class: "td-13 td-center"
+          class: "td-12 td-center"
         },
         {
           label: "สถานะการแสดงของมูล",
@@ -98,6 +144,37 @@ export default {
     };
   },
   methods: {
+    onClickBtnViewContent(data) {
+      this.$router.push({
+        name: "CreateUpdateContent",
+        params: { DataForViewContent: data }
+      });
+    },
+    clickCbb(value) {
+      console.log(TAG + "clickCbb", value);
+      if (value == true) {
+        value = false;
+      } else {
+        value = true;
+      }
+    },
+    setShowActiveStatus(activeStatus) {
+      for (let i = 0; i < this.activeStatus.length; i++) {
+        if (activeStatus == this.activeStatus[i].value) {
+          return this.activeStatus[i].text;
+        }
+      }
+    },
+    setShowCategory(idCategory) {
+      for (let i = 0; i < this.category.length; i++) {
+        if (idCategory == this.category[i].value) {
+          return this.category[i].text;
+        }
+      }
+    },
+    setShowDate(date) {
+      return moment(date).format("Do/MM/YYYY, HH:mm");
+    },
     showRowDetail() {
       this.start = this.perPage * (this.currentPage - 1) + 1;
       this.end =
@@ -133,9 +210,6 @@ export default {
     );
 
     this.totalRows = this.items.length;
-  },
-  watch: {
-    items: {}
   }
 };
 </script>

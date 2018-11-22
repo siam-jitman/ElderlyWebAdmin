@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from "./store/store"
 import VueLodash from 'vue-lodash'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -11,6 +12,8 @@ import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 import fontawesome from '@fortawesome/fontawesome'
 import brands from '@fortawesome/fontawesome-free-brands'
 import faSpinner from '@fortawesome/fontawesome-free-solid'
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
+import VueCkeditor from 'vue-ckeditor5'
 // import generalHelpers from './helper/general-helpers.js'
 
 import LeftMenu from './common/components/Menu/LeftMenu.vue'
@@ -23,6 +26,13 @@ import WindowUploadImage from './common/components/WindowUploadImage/WindowUploa
 
 Vue.config.productionTip = false
 fontawesome.library.add(brands, faSpinner)
+
+const options = {
+  editors: {
+    classic: ClassicEditor
+  },
+  name: 'ckeditor'
+}
 
 //Others component (css or scss)
 import 'bootstrap/dist/css/bootstrap.css'
@@ -38,16 +48,17 @@ Vue.use(VueAxios, axios)
 Vue.use(VueLodash, {
   name: '_'
 }) // options is optional
+Vue.use(VueCkeditor.plugin, options);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-Vue.component('common-leftmenu',LeftMenu);
-Vue.component('common-topmenu',TopMenu);
-Vue.component('common-topmenu',TopMenu);
-Vue.component('common-footer',Footer);
-Vue.component('common-alertdialog',AlertDialog);
-Vue.component('common-window-confirm',WindowConfirm);
-Vue.component('common-window-input-upload-image',WindowUploadImage);
+Vue.component('common-leftmenu', LeftMenu);
+Vue.component('common-topmenu', TopMenu);
+Vue.component('common-topmenu', TopMenu);
+Vue.component('common-footer', Footer);
+Vue.component('common-alertdialog', AlertDialog);
+Vue.component('common-window-confirm', WindowConfirm);
+Vue.component('common-window-input-upload-image', WindowUploadImage);
 
 export const bus = new Vue();
 
@@ -59,6 +70,7 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router,
+  store,
   components: {
     App
   },

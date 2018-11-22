@@ -27,6 +27,14 @@ function getSession(key, defaultValue) {
   }
 }
 
+function removeSession(key) {
+  sessionStorage.removeItem(key);
+}
+
+function clearSession() {
+  sessionStorage.clear();
+}
+
 /**
  *
  * @param {string} key
@@ -38,5 +46,7 @@ function dd(key) {
 }
 export default {
   setSession: setSession,
-  getSession: getSession
+  getSession: getSession,
+  removeSession:removeSession,
+  clearSession:clearSession
 }

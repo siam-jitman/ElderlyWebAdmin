@@ -23,7 +23,8 @@ export default {
   methods: {
     // function call service
     requestLogout() {
-      this.$router.push("./");
+      this.$store.dispatch("removeMemberData");
+      this.$router.push("/");
 
       // console.log(TAG + "requestLogout start");
 

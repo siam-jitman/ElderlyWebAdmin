@@ -1,0 +1,13 @@
+
+.ck.ck-editor__editable{
+  min-height: calc(100vh - 130px) !important;
+  max-height: calc(100vh - 130px) !important;
+  overflow: auto !important;
+}
+
+.ck.ck-editor__editable:not(.ck-editor__nested-editable).ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
+  border: 1px solid #001577 !important;
+  border-color: #001577 !important;
+  box-shadow: 0 0.5px 0.5px rgba(0, 0, 0, 0.075) inset, 0 0 4px #001577 !important;
+  outline: 0 none !important;
+}

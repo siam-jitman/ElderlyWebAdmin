@@ -19,11 +19,11 @@
             {{pageName}}
           </td>
           <td style="width: 30%; text-align: right;" class="text-welcome">
-            <router-link :to="'./ChangePassword'">
+            <router-link :to="'/ChangePassword'">
               <font-awesome-icon :icon="['fas','user']" class="font-icon" />
               <span class="text-link">name lastname</span>
             </router-link>
-            <router-link :to="'./ChangePassword'">
+            <router-link :to="'/Logout'">
               <font-awesome-icon :icon="['fas','sign-out-alt']" class="font-icon" @click.stop.prevent="onClickBtnLogout" />
               <span >ออกจากระบบ</span>
             </router-link>
@@ -48,16 +48,11 @@ export default {
     return {
       user: "",
       version: "",
-      header: "BOT Manager"
+      header: ""
     };
   },
   created() {
-    this.user = _.isEmpty(sessionStorage.getItem("bm_uidKey"))
-      ? "admin"
-      : JSON.parse(sessionStorage.getItem("bm_uidKey"));
-    this.version = _.isEmpty(sessionStorage.getItem("bm_ui_versionId"))
-      ? "0.0.0.1"
-      : JSON.parse(sessionStorage.getItem("bm_ui_versionId"));
+
     this.header = this.headerName;
   }
 };
