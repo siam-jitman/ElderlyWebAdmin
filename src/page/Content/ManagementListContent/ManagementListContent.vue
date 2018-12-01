@@ -10,7 +10,7 @@
             </b-input-group-append>
           </b-input-group>
         </b-col>
-        <b-col align="right">
+        <!-- <b-col align="right">
           <router-link :to="'/Content/CreateUpdateContent'">
             <b-btn class="blue">
               <font-awesome-icon :icon="['fas','plus-circle']" />
@@ -21,7 +21,7 @@
             <font-awesome-icon :icon="['fas','minus-circle']" />
             ลบ
           </b-btn>
-        </b-col>
+        </b-col> -->
       </b-row>
     </div>
     <b-table :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :sort-direction="sortDirection" @filtered="onFiltered" :no-sort-reset="true" class="table-ListAdapter table-striped">
@@ -29,12 +29,12 @@
         <input type="checkbox" @click.stop.prevent="clickSeletedAll(head)" v-model="allSelected">
       </template> -->
 
-      <template slot="checkList" slot-scope="data">
+      <!-- <template slot="checkList" slot-scope="data">
         <input type="checkbox" v-show="data.item.activeStatus == 3" v-model="data.item.checkList" @change.stop.prevent="clickCbb(data.item.checkList)">
-      </template>
+      </template> -->
 
       <template slot="btnViewContent" slot-scope="data">
-        <font-awesome-icon :icon="['fas','edit']" class="pointer" @click.stop.prevent="onClickBtnViewContent(data.item)" />
+        <font-awesome-icon :icon="['fas','search']" class="pointer" @click.stop.prevent="onClickBtnViewContent(data.item)" />
       </template>
 
       <template slot="idCategory" slot-scope="data">
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-var TAG = "[/page/Content/ListContent/ListContent.vue] => ";
+var TAG = "[/page/Content/ManagementListContent/ManagementListContent.vue] => ";
 
 import apiUtil from "../../../common/apiUtil/index";
 import uiUtil from "../../../common/uiUtil/index";
@@ -101,11 +101,11 @@ export default {
       currentPage: 1,
       perPage: 25,
       fields: [
-        {
-          label: " ",
-          key: "checkList",
-          class: "td-3 td-center"
-        },
+        // {
+        //   label: " ",
+        //   key: "checkList",
+        //   class: "td-3 td-center"
+        // },
         {
           label: " ",
           key: "btnViewContent",
@@ -114,13 +114,13 @@ export default {
         {
           label: "ชื่อเนื้อหา",
           key: "nameContent",
-          class: "td-27",
+          class: "td-38",
           sortable: true
         },
         {
           label: "ประเภทของเนื้อหา",
           key: "idCategory",
-          class: "td-20"
+          class: "td-26"
         },
         ,
         {
@@ -128,13 +128,13 @@ export default {
           key: "createTime",
           class: "td-12 td-center"
         },
+        // {
+        //   label: "วันที่แก้ไขข้อมูลล่าสุด",
+        //   key: "updateTime",
+        //   class: "td-12 td-center"
+        // },
         {
-          label: "วันที่แก้ไขข้อมูลล่าสุด",
-          key: "updateTime",
-          class: "td-12 td-center"
-        },
-        {
-          label: "สถานะการแสดงของมูล",
+          label: "สถานะการแสดงข้อมูล",
           key: "activeStatus",
           class: "td-13 td-center"
         }
@@ -145,7 +145,7 @@ export default {
   methods: {
     onClickBtnViewContent(data) {
       this.$router.push({
-        name: "CreateUpdateContent",
+        name: "ViewContent",
         params: { DataForViewContent: data }
       });
     },
@@ -191,7 +191,7 @@ export default {
   },
   created() {
     uiUtil.bus.on(
-      constantUtil.EVENT.CONTENT.SET_ITEMS_LIST_CONTENT,
+      constantUtil.EVENT.MANAGEMENT_CONTENT.SET_ITEMS_LIST_CONTENT_MANAGEMENT,
       dataTable => {
         this.items = dataTable;
         // for (let i = 0; i < dataTable.length; i++) {

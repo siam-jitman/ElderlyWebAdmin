@@ -15,17 +15,33 @@
       </div> -->
       <table style="width: 100%; height:100%;">
         <tr style="width: 100%; height:100%;">
-          <td style="width: 70%;" class="menu-bottom">
+          <td style="width: 40px;" align="left">
+            <img
+              src="https://via.placeholder.com/120x120?text=Logo"
+              style="width: 40px;"
+            >
+          </td>
+          <td
+            class="menu-bottom"
+          >
             {{pageName}}
           </td>
-          <td style="width: 30%; text-align: right;" class="text-welcome">
-            <router-link :to="'/ChangePassword'">
-              <font-awesome-icon :icon="['fas','user']" class="font-icon" />
-              <span class="text-link">name lastname</span>
-            </router-link>
+          <td
+            style="width: 30%; text-align: right;"
+            class="text-welcome"
+          >
+              <font-awesome-icon
+                :icon="['fas','user']"
+                class="font-icon"
+              />
+              <span class="text-link">{{user}}</span>
             <router-link :to="'/Logout'">
-              <font-awesome-icon :icon="['fas','sign-out-alt']" class="font-icon" @click.stop.prevent="onClickBtnLogout" />
-              <span >ออกจากระบบ</span>
+              <font-awesome-icon
+                :icon="['fas','sign-out-alt']"
+                class="font-icon"
+                @click.stop.prevent="onClickBtnLogout"
+              />
+              <span>ออกจากระบบ</span>
             </router-link>
           </td>
         </tr>
@@ -39,6 +55,9 @@
 </template>
 
 <script>
+
+import "./custom.scss";
+
 export default {
   props: {
     pageName: String,
@@ -52,7 +71,8 @@ export default {
     };
   },
   created() {
-
+    let memberData = this.$store.getters.getMemberData;
+    this.user = memberData.nameMember;
     this.header = this.headerName;
   }
 };
@@ -68,9 +88,9 @@ export default {
   color: white;
 }
 
-span.text-link :hover {
+span.text-link {
   text-decoration: none !important;
-  color: #7d7d7d;
+  color: #ffffff;
 }
 .font-icon {
   margin-left: 10px;
@@ -82,18 +102,18 @@ span.text-link :hover {
   font-size: 14px !important;
 }
 .top-menu {
-  z-index: 2;
-  /* position: fixed; */
+  z-index: 66;
+  position: fixed;
   width: 100%;
   height: 70px;
-  padding: 0px 20px;
+  padding: 0px 5px;
   right: auto;
   left: 0px;
   top: 0px;
   margin: 0px;
-  background: #7d7d7d;
+  background: #000d46;
   /* font-weight: 600; */
-  color: #001577;
+  color: #000d46;
 }
 .right-text {
   position: absolute;
@@ -104,17 +124,18 @@ span.text-link :hover {
   color: #fff;
 }
 .menu-title {
-  margin-left: 90px;
+  margin-left: 0px;
   height: 100%;
   /* padding-left: 90px; */
 }
 .menu-top {
   font-weight: bold;
-  color: #001577;
+  color: #000d46;
   font-size: 25px;
   height: 35px;
 }
 .menu-bottom {
+  padding-left: 15px;
   font-weight: bold;
   font-size: 20px;
   color: #fff;

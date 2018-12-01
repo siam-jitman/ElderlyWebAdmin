@@ -9,35 +9,23 @@
     <div class="content-main">
       <div class="container">
         <b-form>
-          <div
-            style="width: 100%;"
-            align="center"
-          >
-            <span
-              v-show="status == 'update' && activeStatus != '1'"
-              class="span-wait-confirm"
-            >
-              เนื้อหานี้ยังไม่ได้รับการอนุมัติจากผู้ดูแลระบบ <br />ต้องได้รับอนุมัติการเพิ่มข้อมูล จากผู้ดูแลระบบก่อน จึงจะสามารถแก้ไขข้อมูลได้
-            </span>
-          </div>
+
           <div align="right">
             <b-btn
-              v-show="status == 'create'"
               class="blue"
-              @click="clickBtnAdd()"
+              @click="clickApprove()"
             >
-              <font-awesome-icon :icon="['fas','plus-circle']" />
-              เพิ่ม
+              <font-awesome-icon :icon="['fas','check-circle']" />
+              อนุมัติให้แสดงข้อมูล
             </b-btn>
             <b-btn
-              v-show="status == 'update' && activeStatus == '1'"
-              class="blue"
-              @click="clickBtnUpdate()"
+              class="red"
+              @click="clickReject()"
             >
-              <font-awesome-icon :icon="['fas','pencil-alt']" />
-              แก้ไข
+              <font-awesome-icon :icon="['fas','times-circle']" />
+              ไม่อนุมัติให้แสดงข้อมูล
             </b-btn>
-            <router-link :to="'/Content/'">
+            <router-link :to="'/ManagementContent/'">
               <b-btn class="gray">
                 กลับ
               </b-btn>
@@ -54,6 +42,7 @@
               :placeholder="formContent.nameContent.placeholder"
               @keypress.native="validateText($event,formContent.nameContent.validateType)"
               :state="formContent.nameContent.state"
+              :disabled="formContent.nameContent.disabled"
             />
             <!-- {{formContent.nameContent.validateType}} -->
           </b-form-group>
@@ -65,7 +54,6 @@
             <b-form-select
               v-model="formContent.idCategory.value"
               :options="optionsCategory"
-              @change="onChangeCbbIdCategory()"
               :state="formContent.idCategory.state"
               :disabled="formContent.idCategory.disabled"
             />
@@ -86,71 +74,27 @@
                 style="max-height: 400px;"
               >
             </div>
-            <br>
-            <b-form-file
-              v-model="formContent.imageContent.value"
-              :placeholder="formContent.imageContent.placeholder"
-              :accept="formContent.imageContent.accept"
-              :state="formContent.imageContent.state"
-            />
+
           </b-form-group>
-
-          <!-- <b-form-group :label="formContent.urlContent.label" v-show="formContent.urlContent.show">
-            <b-form-input v-model="formContent.urlContent.value" :type="formContent.urlContent.type" :placeholder="formContent.urlContent.placeholder" @keypress.native="validateText($event,formContent.urlContent.validateType)" />
-            <table style="width: 100%" v-if="formContent.urlContent.status == 'update'">
-              <tr>
-                <td class="td-in-form">
-                  <b-form-input v-model="formContent.urlContent.value" :type="formContent.urlContent.type" :placeholder="formContent.urlContent.placeholder" :disabled="formContent.urlContent.disabled" :state="formContent.urlContent.state" />
-                </td>
-                <td style="width: 30px;" align="right">
-                  <font-awesome-icon :icon="['fas','eye']" class="font-icon" />
-                </td>
-              </tr>
-            </table>
-
-            <b-form-input v-else v-model="formContent.urlContent.value" :type="formContent.urlContent.type" :placeholder="formContent.urlContent.placeholder" :disabled="formContent.urlContent.disabled" :state="formContent.urlContent.state" @blur="validateUrl($event ,formContent.urlContent)" />
-
-          </b-form-group> -->
 
           <b-form-group
             :label="formContent.urlContent.label"
             v-show="formContent.urlContent.show"
           >
             <a
-              v-if="status == 'update' && (formContent.idCategory.value == '1' || formContent.idCategory.value == '7' || formContent.idCategory.value == '8') "
               target="_blank"
-              :href="setShowFileVideoContent(formContent.urlContent.fileName)"
-            >ดาวน์โหลด {{formContent.urlContent.label}} ที่เคยบันทึกไว้</a>
-
-            <b-form-file
-              ref="urlContent"
-              v-model="formContent.urlContent.value"
-              :placeholder="formContent.urlContent.placeholder"
-              :state="formContent.urlContent.state"
-              :disabled="formContent.urlContent.disabled"
-            />
-
+              :href="setShowFileVideoContent(formContent.urlContent.value)"
+            >ดาวน์โหลด {{formContent.urlContent.label}}</a>
           </b-form-group>
 
           <b-form-group
             :label="formContent.fileEbookContent.label"
             v-show="formContent.fileEbookContent.show"
           >
-
             <a
-              v-if="status == 'update' && formContent.idCategory.value == '4'"
               target="_blank"
-              :href="setShowFileEbookContent(formContent.fileEbookContent.fileName)"
-            >ดาวน์โหลด {{formContent.fileEbookContent.label}} ที่เคยบันทึกไว้</a>
-
-            <b-form-file
-              ref="fileEbookContent"
-              v-model="formContent.fileEbookContent.value"
-              :placeholder="formContent.fileEbookContent.placeholder"
-              :state="formContent.fileEbookContent.state"
-              :disabled="formContent.fileEbookContent.disabled"
-            />
-
+              :href="setShowFileEbookContent(formContent.fileEbookContent.value)"
+            >ดาวน์โหลด {{formContent.fileEbookContent.label}}</a>
           </b-form-group>
 
           <b-form-group
@@ -163,6 +107,7 @@
               :placeholder="formContent.scriptContent.placeholder"
               @keypress.native="validateText($event,formContent.scriptContent.validateType)"
               :state="formContent.scriptContent.state"
+              :disabled="formContent.scriptContent.disabled"
             />
           </b-form-group>
 
@@ -176,7 +121,7 @@
               :upload-adapter="UploadAdapter"
               id="ck-create-update-content"
               :state="formContent.detailContent.state"
-              :readonly="setReadOlnyCkeditor"
+              :readonly="true"
             ></ckeditor>
           </b-form-group>
 
@@ -191,7 +136,7 @@
 </template>
 
 <script>
-var TAG = "[/page/Content/CreateUpdateContent/CreateUpdateContent.vue] => ";
+var TAG = "[/page/Content/ViewContent/ViewContent.vue] => ";
 
 const rs = require("regex-stringify");
 
@@ -209,8 +154,9 @@ export default {
   props: {},
   data() {
     return {
-      activeStatus: 0,
-      status: "create",
+      idContent: NaN,
+      activeStatus: NaN,
+      status: "update",
       formContent: {
         nameContent: {
           id: "txtNameContent",
@@ -219,7 +165,7 @@ export default {
           label: "ชื่อเนื้อหา",
           placeholder: "ชื่อของเนื้อหา",
           allowBlank: false,
-          disabled: false,
+          disabled: true,
           readOnly: false,
           validateType: rs(validateUtil.REGEX.TEXT_NOT_SPECIAL_HAVE_SPEC_UNDER),
           show: true,
@@ -231,7 +177,7 @@ export default {
           type: "combo",
           label: "หมวดหมู่ของเนื้อหา",
           allowBlank: false,
-          disabled: false,
+          disabled: true,
           readOnly: false,
           options: this.optionsCategory,
           show: true,
@@ -245,7 +191,7 @@ export default {
           label: "รูปภาพหลักของเนื้อหา",
           placeholder: "เลือกรูปภาพหลักของเนื้อหา",
           allowBlank: true,
-          disabled: false,
+          disabled: true,
           readOnly: false,
           show: true,
           state: null
@@ -268,14 +214,13 @@ export default {
           value: null,
           type: "file",
           accept: "application/epub+zip",
-          label: "ไฟล์ E-Book",
-          placeholder: "เลือกไฟล์ E-Book",
+          label: "ไฟล์ e-Book",
+          placeholder: "เลือกไฟล์ e-Book",
           allowBlank: true,
           disabled: true,
           readOnly: false,
           show: true,
-          state: null,
-          fileName: ""
+          state: null
         },
         scriptContent: {
           id: "txtScriptContent",
@@ -284,7 +229,7 @@ export default {
           label: "รายละเอียดโดยย่อ",
           placeholder: "รายละเอียดโดยย่อของเนื้อหา",
           allowBlank: false,
-          disabled: false,
+          disabled: true,
           readOnly: false,
           show: true,
           validateType: rs(validateUtil.REGEX.TEXT_NOT_SPECIAL_HAVE_SPEC_UNDER),
@@ -296,14 +241,14 @@ export default {
           type: "textarea",
           label: "รายละเอียดเนื้อหา",
           allowBlank: false,
-          disabled: false,
+          disabled: true,
           readOnly: false,
           show: true,
           state: null
         }
       },
       optionsCategory: globalUtil.VARIABLES.CATEGORY,
-      pageName: "จัดการเนื้อหา / เพิ่มข้อมูลเนื้อหา",
+      pageName: "รายการข้อมูลที่รอการอนุมัติ",
       UploadAdapter: function(loader) {
         this.loader = loader;
         this.upload = () => {
@@ -332,19 +277,7 @@ export default {
       }
     };
   },
-  computed: {
-    setReadOlnyCkeditor() {
-      if (this.status == "create") {
-        return false;
-      } else {
-        if (this.status == "update" && this.activeStatus == "1") {
-          return false;
-        } else {
-          return true;
-        }
-      }
-    }
-  },
+  computed: {},
   methods: {
     setShowFileVideoContent(urlVideo) {
       return globalUtil.SERVICES.URI_VIDEO + urlVideo;
@@ -368,108 +301,29 @@ export default {
         );
       }
     },
-    clickBtnUpdate() {
-      var valueForm = dataUtil.getValuesForm(this.formContent);
-
-      var validateForm = validateUtil.validateForm(this.formContent);
-      if (validateForm) {
-        var callBackFn = function() {
-          if (valueForm.idCategory == "4") {
-            this.requestUploadEBook();
-          } else if (
-            valueForm.idCategory == "1" ||
-            valueForm.idCategory == "7" ||
-            valueForm.idCategory == "8"
-          ) {
-            this.requestUploadVideo();
-          } else {
-            this.requestAddContentByIdMember();
-          }
-        }.bind(this);
-        uiUtil.bus.post(
-          constantUtil.EVENT.SHOW_WINDOW_CONFIRM,
-          callBackFn,
-          function() {},
-          globalUtil.VARIABLES.MSG_CONFIRM.MSG_CONFIRM_EDIT_CONTENT,
-          globalUtil.VARIABLES.MSG_CONFIRM_HEADER.MSG_CONFIRM_ADD_CONTENT
-        );
-      } else {
-        uiUtil.bus.post(
-          constantUtil.EVENT.SHOW_ALERT_DIALOG,
-          globalUtil.VARIABLES.MSG_ERROR.COMMON.MSG_REQUIRED
-        );
-      }
-    },
-    clickBtnAdd() {
+    clickBtnUpdate() {},
+    clickReject() {
+      this.activeStatus = 2;
       // this.$nextTick(() => {
-      var valueForm = dataUtil.getValuesForm(this.formContent);
-
-      var validateForm = validateUtil.validateForm(this.formContent);
-
-      var checkImageContent = true;
-      if (this.formContent.imageContent.value == null) {
-        checkImageContent = false;
-        this.formContent.imageContent.state = false;
-      } else {
-        this.formContent.imageContent.state = null;
-      }
-
-      var checkEbook = true;
-
-      if (this.formContent.fileEbookContent.value == null) {
-        if (this.formContent.fileEbookContent.disabled) {
-          checkEbook = true;
-          this.formContent.fileEbookContent.state = null;
-        } else {
-          checkEbook = false;
-          this.formContent.fileEbookContent.state = false;
-        }
-      } else {
-        checkEbook = true;
-        this.formContent.fileEbookContent.state = null;
-      }
-
-      var checkVideo = true;
-      if (this.formContent.urlContent.value == null) {
-        if (this.formContent.urlContent.disabled) {
-          checkVideo = true;
-          this.formContent.urlContent.state = null;
-        } else {
-          checkVideo = false;
-          this.formContent.urlContent.state = false;
-        }
-      } else {
-        checkVideo = true;
-        this.formContent.urlContent.state = null;
-      }
-
-      if (validateForm && checkImageContent && checkEbook && checkVideo) {
-        var callBackFn = function() {
-          if (this.formContent.idCategory.value == "4") {
-            this.requestUploadEBook();
-          } else if (
-            this.formContent.idCategory.value == "1" ||
-            this.formContent.idCategory.value == "7" ||
-            this.formContent.idCategory.value == "8"
-          ) {
-            this.requestUploadVideo();
-          } else {
-            this.requestAddContentByIdMember();
-          }
-        }.bind(this);
-        uiUtil.bus.post(
-          constantUtil.EVENT.SHOW_WINDOW_CONFIRM,
-          callBackFn,
-          function() {},
-          globalUtil.VARIABLES.MSG_CONFIRM.MSG_CONFIRM_ADD_CONTENT,
-          globalUtil.VARIABLES.MSG_CONFIRM_HEADER.MSG_CONFIRM_ADD_CONTENT
-        );
-      } else {
-        uiUtil.bus.post(
-          constantUtil.EVENT.SHOW_ALERT_DIALOG,
-          globalUtil.VARIABLES.MSG_ERROR.COMMON.MSG_REQUIRED
-        );
-      }
+      uiUtil.bus.post(
+        constantUtil.EVENT.SHOW_WINDOW_CONFIRM,
+        this.requestUpdateStatusContent,
+        function() {},
+        globalUtil.VARIABLES.MSG_CONFIRM.MSG_CONFIRM_APPROVE_CONTENT,
+        globalUtil.VARIABLES.MSG_CONFIRM_HEADER.MSG_CONFIRM_APPROVE_CONTENT
+      );
+      // });
+    },
+    clickApprove() {
+      this.activeStatus = 1;
+      // this.$nextTick(() => {
+      uiUtil.bus.post(
+        constantUtil.EVENT.SHOW_WINDOW_CONFIRM,
+        this.requestUpdateStatusContent,
+        function() {},
+        globalUtil.VARIABLES.MSG_CONFIRM.MSG_CONFIRM_APPROVE_CONTENT,
+        globalUtil.VARIABLES.MSG_CONFIRM_HEADER.MSG_CONFIRM_APPROVE_CONTENT
+      );
       // });
     },
     validateText: function(event, validateType) {
@@ -514,113 +368,28 @@ export default {
       }, 0);
     },
     // ********** methods call service **********//
-    requestAddContentByIdMember(file) {
-      if (file == undefined || file == null) {
-        file = "";
-      }
+    requestUpdateStatusContent() {
       console.log(
-        TAG + "requestAddContentByIdMember start",
-        globalUtil.SERVICES.CONTENT.URL_ADD_CONTENT_BY_ID_MEMBER
+        TAG + "requestUpdateStatusContent start",
+        globalUtil.SERVICES.CONTENT.URL_UPDATE_STATUS_CONTENT
       );
 
-      let valueformContent = dataUtil.getValuesForm(this.formContent);
-
       uiUtil.bus.post(constantUtil.EVENT.COMMMON.GLOBALLOADING);
-
-      const body = new FormData();
-      body.append("imageContent", this.formContent.imageContent.value);
-
-      if (this.formContent.idCategory.value == "4") {
-        body.append(
-          "requestBody",
-          JSON.stringify({
-            ...valueformContent,
-            idMember: this.$store.getters.getMemberData.idMember,
-            urlContent: "",
-            fileEbookContent: file
-          })
-        );
-      } else {
-        body.append(
-          "requestBody",
-          JSON.stringify({
-            ...valueformContent,
-            idMember: this.$store.getters.getMemberData.idMember,
-            urlContent: file,
-            fileEbookContent: ""
-          })
-        );
-      }
-
-      const call = apiUtil.callService.doPostFormData(
-        globalUtil.SERVICES.CONTENT.URL_ADD_CONTENT_BY_ID_MEMBER,
-        body
+      const bodyParams = {
+        idContent: this.idContent,
+        activeStatus: this.activeStatus
+      };
+      const call = apiUtil.callService.doPost(
+        globalUtil.SERVICES.CONTENT.URL_UPDATE_STATUS_CONTENT,
+        bodyParams
       );
 
       apiUtil.callService.validateResponse(
         call,
         function(response) {
-          console.log(TAG + "requestAddContentByIdMember success");
+          console.log(TAG + "requestUpdateStatusContent success");
           // process after validateResponse
-          this.$router.push("/Content");
-          // end process after validateResponse
-        }.bind(this)
-      );
-    },
-    requestUploadEBook() {
-      console.log(
-        TAG + "requestUploadEBook start",
-        globalUtil.SERVICES.CONTENT.URL_UPLOAD_EBOOK_CONTENT
-      );
-
-      // let valueformContent = dataUtil.getValuesForm(this.formContent);
-
-      uiUtil.bus.post(constantUtil.EVENT.COMMMON.GLOBALLOADING);
-
-      const body = new FormData();
-      console.log("fileEBookContent => ", this.$refs.fileEbookContent);
-      body.append("fileEBookContent", this.$refs.fileEbookContent.selectedFile);
-
-      const call = apiUtil.callService.doPostFormData(
-        globalUtil.SERVICES.CONTENT.URL_UPLOAD_EBOOK_CONTENT,
-        body
-      );
-
-      apiUtil.callService.validateResponse(
-        call,
-        function(response) {
-          console.log(TAG + "requestAddContentByIdMember success");
-          // process after validateResponse
-          this.requestAddContentByIdMember(response.resultData);
-          // end process after validateResponse
-        }.bind(this)
-      );
-    },
-    requestUploadVideo() {
-      console.log(
-        TAG + "requestUploadVideo start",
-        globalUtil.SERVICES.CONTENT.URL_UPLOAD_VIDEO_CONTENT
-      );
-
-      // let valueformContent = dataUtil.getValuesForm(this.formContent);
-
-      uiUtil.bus.post(constantUtil.EVENT.COMMMON.GLOBALLOADING);
-
-      const body = new FormData();
-      console.log("urlContent => ", this.$refs.urlContent);
-      body.append("urlContent", this.$refs.urlContent.selectedFile);
-
-      const call = apiUtil.callService.doPostFormData(
-        globalUtil.SERVICES.CONTENT.URL_UPLOAD_VIDEO_CONTENT,
-        body
-      );
-
-      apiUtil.callService.validateResponse(
-        call,
-        function(response) {
-          console.log(TAG + "requestUploadVideo success");
-          // process after validateResponse
-          this.requestAddContentByIdMember(response.resultData);
+          this.$router.push("/ManagementContent");
           // end process after validateResponse
         }.bind(this)
       );
@@ -632,7 +401,7 @@ export default {
       TAG + "created() => this.$store.getters.getMemberData => ",
       memberData
     );
-    if (memberData == null || memberData.roleMember != "member") {
+    if (memberData == null || memberData.roleMember != "admin") {
       this.$router.push("/");
     } else {
       uiUtil.bus.post(constantUtil.EVENT.COMMMON.GLOBALLOADING);
@@ -662,19 +431,15 @@ export default {
         this.formContent.idCategory.value = DataForViewContent.idCategory;
         this.formContent.imageContent.value = DataForViewContent.imageContent;
         this.formContent.urlContent.value = DataForViewContent.urlContent;
-        this.formContent.urlContent.fileName = DataForViewContent.urlContent;
         this.formContent.fileEbookContent.value =
-          DataForViewContent.fileEBookContent;
-        this.formContent.fileEbookContent.fileName =
           DataForViewContent.fileEBookContent;
         this.formContent.scriptContent.value = DataForViewContent.scriptContent;
         this.formContent.detailContent.value = DataForViewContent.detailContent;
+        this.idContent = DataForViewContent.idContent;
 
-        this.activeStatus = DataForViewContent.activeStatus;
-
-        this.onChangeCbbIdCategory();
+        // this.onChangeCbbIdCategory();
       } else {
-        this.status = "create";
+          this.$router.push("/ManagementContent");
       }
     }
   },
@@ -689,15 +454,5 @@ export default {
 * {
   font-family: "Roboto", sans-serif;
   /* font-size: 14px; */
-}
-.content-main {
-  padding-top: 80px;
-  padding-left: 60px;
-}
-.span-wait-confirm {
-  font-size: 20px;
-  color: red;
-  text-align: center;
-  width: 100%;
 }
 </style>

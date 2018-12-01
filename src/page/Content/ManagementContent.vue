@@ -1,10 +1,10 @@
 <template>
   <div>
     <common-leftmenu></common-leftmenu>
-    <common-topmenu id="topmenu" :headerName="''" :pageName="'จัดการเนื้อหา'"></common-topmenu>
+    <common-topmenu id="topmenu" :headerName="''" :pageName="'รายการข้อมูลที่รอการอนุมัติ'"></common-topmenu>
     <div class="content-main">
 
-      <list-content></list-content>
+      <list-content-management></list-content-management>
 
     </div>
     <common-footer id="footer"></common-footer>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-var TAG = "[/page/Content/Content.vue] => ";
+var TAG = "[/page/Content/ManagementContent.vue] => ";
 
 import apiUtil from "../../common/apiUtil/index";
 import uiUtil from "../../common/uiUtil/index";
@@ -22,13 +22,13 @@ import dataUtil from "../../common/dataUtil/index";
 import storageUtil from "../../common/storageUtil/index";
 import validateUtil from "../../common/validateUtil/index";
 
-import ListContent from "./ListContent/ListContent.vue";
+import ManagementListContent from "./ManagementListContent/ManagementListContent.vue";
 
 
 export default {
   props: {},
   components: {
-    "list-content": ListContent
+    "list-content-management": ManagementListContent
   },
   data() {
     return {
@@ -40,7 +40,7 @@ export default {
     requestListContent() {
       console.log(
         TAG + "requestListContent start",
-        globalUtil.SERVICES.CONTENT.URL_FIND_CONTENT_BI_ID_MEMBER
+        globalUtil.SERVICES.CONTENT.URL_FIND_CONTENT_IN_ACTIVE
       );
 
       let that = this;
@@ -50,15 +50,15 @@ export default {
         idMember: this.$store.getters.getMemberData.idMember
       };
       const call = apiUtil.callService.doPost(
-        globalUtil.SERVICES.CONTENT.URL_FIND_CONTENT_BI_ID_MEMBER,
+        globalUtil.SERVICES.CONTENT.URL_FIND_CONTENT_IN_ACTIVE,
         bodyParams
       );
 
       apiUtil.callService.validateResponse(call, function(response) {
-        console.log(TAG + "requestListAdapterBot success");
+        console.log(TAG + "requestListContent success");
         // process after validateResponse
         uiUtil.bus.post(
-          constantUtil.EVENT.CONTENT.SET_ITEMS_LIST_CONTENT,
+          constantUtil.EVENT.MANAGEMENT_CONTENT.SET_ITEMS_LIST_CONTENT_MANAGEMENT,
           response.resultData
         );
         // end process after validateResponse
@@ -81,7 +81,7 @@ export default {
       TAG + "created() => this.$store.getters.getMemberData => ",
       memberData
     );
-    if (memberData == null || memberData.roleMember != "member") {
+    if (memberData == null || memberData.roleMember != "admin") {
       this.$router.push("/");
     } else {
       this.requestListContent();

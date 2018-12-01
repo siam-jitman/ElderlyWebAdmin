@@ -59,7 +59,7 @@ export default {
       (message, header, redirect, styleMessage) => {
         this.showAlert = true;
         this.message = message;
-        this.header = !_.isEmpty(header) ? header : "Message";
+        this.header = !_.isEmpty(header) ? header : "";
         this.redirect = redirect;
         this.styleMessage = styleMessage;
       }

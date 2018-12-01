@@ -4,25 +4,86 @@
       <img src="../../../assets/images/menu/logo_botManager.png" class="image-icon" style="width: 50px;">
       <span class="menu-string">Menu</span>
     </div> -->
-    <div class="menu-list" style="margin-top: 5px;">
+    <div
+      v-if="memberData.roleMember == 'admin'"
+      class="menu-list"
+      style="margin-top: 5px;"
+    >
 
-      <!-- <router-link :to="'./Content'" v-b-tooltip.hover title="จัดการเนื้อหาของท่าน">
-        <div :class="setMenuActive('Content')">
-          <font-awesome-icon :icon="['fas','images']" class="font-icon" />
+      <router-link
+        :to="'/ManagementContent'"
+        v-b-tooltip.hover
+        title="รายการข้อมูลที่รอการอนุมัติ"
+      >
+        <div :class="setMenuActive(['ManagementContent' , 'ViewContent'])">
+          <font-awesome-icon
+            :icon="['fas','clipboard-list']"
+            class="font-icon"
+          />
         </div>
-      </router-link> -->
+      </router-link>
+
+      <router-link
+        :to="'/ManagementContentAll'"
+        v-b-tooltip.hover
+        title="รายการข้อมูลที่รอการอนุมัติ"
+      >
+        <div :class="setMenuActive(['ManagementContentAll'])">
+          <font-awesome-icon
+            :icon="['fas','database']"
+            class="font-icon"
+          />
+        </div>
+      </router-link>
+
+    </div>
+
+    <div
+      v-if="memberData.roleMember == 'member'"
+      class="menu-list"
+      style="margin-top: 5px;"
+    >
+
+      <router-link
+        :to="'/ManagementContent'"
+        v-b-tooltip.hover
+        title="รายการข้อมูลที่รอการอนุมัติ"
+      >
+        <div :class="setMenuActive(['Content'])">
+          <font-awesome-icon
+            :icon="['fas','file-alt']"
+            class="font-icon"
+          />
+        </div>
+      </router-link>
+
 
     </div>
 
     <div class="menu-list menu-bottom">
-      <router-link :to="'./ChangePassword'" v-b-tooltip.hover title="จัดการโปรไฟล์">
+      <router-link
+        :to="'./ChangePassword'"
+        v-b-tooltip.hover
+        title="จัดการโปรไฟล์"
+      >
         <div class="menu-link">
-          <font-awesome-icon :icon="['fas','user']" class="font-icon" />
+          <font-awesome-icon
+            :icon="['fas','user']"
+            class="font-icon"
+          />
         </div>
       </router-link>
 
-      <div class="menu-link" @click.stop.prevent="onClickBtnLogout" v-b-tooltip.hover title="ออกจากระบบ">
-        <font-awesome-icon :icon="['fas','sign-out-alt']" class="font-icon" />
+      <div
+        class="menu-link"
+        @click.stop.prevent="onClickBtnLogout"
+        v-b-tooltip.hover
+        title="ออกจากระบบ"
+      >
+        <font-awesome-icon
+          :icon="['fas','sign-out-alt']"
+          class="font-icon"
+        />
       </div>
     </div>
 
@@ -38,19 +99,27 @@ import dataUtil from "../../dataUtil/index";
 import storageUtil from "../../storageUtil/index";
 import validateUtil from "../../validateUtil/index";
 
+import "./custom.scss";
+
 export default {
   data() {
     return {
       menuList: []
     };
   },
+  computed:{
+    memberData(){
+      return this.$store.getters.getMemberData;
+    }
+  },
   methods: {
     setMenuActive(menuName) {
-      if (window.location.href.indexOf(menuName) >= 0) {
-        return "menu-list-active";
-      } else {
-        return "menu-list";
+      for (let i = 0; i < menuName.length; i++) {
+        if (window.location.href.indexOf(menuName[i]) >= 0) {
+          return "menu-list-active";
+        }
       }
+      return "menu-link";
     },
     showMessage() {
       alert("Hello");
@@ -67,7 +136,7 @@ export default {
       //   { color: "#000" }
       // );
 
-          this.$router.push("./Logout");
+      this.$router.push("./Logout");
     }
   },
   created() {
@@ -96,17 +165,7 @@ export default {
 .font-icon {
   color: #ffffff;
 }
-.left-menu {
-  z-index: 3;
-  position: fixed;
-  width: 50px;
-  height: 100vh;
-  right: auto;
-  left: 0px;
-  top: 0px;
-  margin: 0px;
-  background: #404040;
-}
+
 .menu-icon {
   padding-top: 10px;
   height: 70px;
@@ -136,6 +195,7 @@ a {
   color: #ffffff;
 }
 .menu-link:hover {
+  -webkit-transition: 0.25s;
   background: #979797;
 }
 .menu-list-icon {
@@ -153,10 +213,14 @@ a {
   transition: 0.25s;
 }
 
-.menu-list-active{
-  padding: 10px 5px;
+.menu-list-active {
+  text-align: left;
+  padding: 10px 13px;
   cursor: pointer;
+  -webkit-transition: 0.25s;
   transition: 0.25s;
-  background: #c2c2c2;
+  background: #000d46;
+  width: 60px;
+  border-radius: 0px 20px 20px 0px;
 }
 </style>

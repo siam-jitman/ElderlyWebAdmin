@@ -5,8 +5,8 @@ button.blue-big {
   font-size: 14px;
   padding: 5px 12px;
   /* border-radius: 7px; */
-  background: #001577;
-  border: 1px solid #001577;
+  background: #000d46;
+  border: 1px solid #000d46;
   color: #FFF;
   font-weight: 600;
 }
@@ -19,8 +19,8 @@ button.blue-big:disabled {
 
 button.blue-big:hover {
   background: #FFF;
-  border: 1px solid #001577;
-  color: #001577;
+  border: 1px solid #000d46;
+  color: #000d46;
 }
 
 button.blue {
@@ -29,8 +29,8 @@ button.blue {
   font-size: 14px;
   padding: 5px 12px;
   /* border-radius: 7px; */
-  background: #001577;
-  border: 1px solid #001577;
+  background: #000d46;
+  border: 1px solid #000d46;
   color: #FFF;
   font-weight: 600;
 }
@@ -43,8 +43,8 @@ button.blue:disabled {
 
 button.blue:hover {
   background: #FFF;
-  border: 1px solid #001577;
-  color: #001577;
+  border: 1px solid #000d46;
+  color: #000d46;
 }
 
 button.gray {
@@ -152,6 +152,6 @@ p.btn-outline:disabled {
 
 .btn-outline-warning:not(:disabled):not(.disabled):active, .btn-outline-warning:not(:disabled):not(.disabled).active, .show > .btn-outline-warning.dropdown-toggle {
   color: #212529 !important;
-  background-color: #001577 !important;
+  background-color: #000d46 !important;
   border-color: #212529 !important;
 }

@@ -1,28 +1,77 @@
 <template>
-    <div v-show="showWindow">
-        <div role="dialog" class="modal d-block" style="background:rgba(0,0,0,0.3);padding:0px 40px;z-index:999999;">
-          <div class="modal-dialog modal-md modal-dialog-centered" style="width:400px;">
-              <div tabindex="-1" role="document" class="modal-content">
-                  <header class="modal-header">
-                    <h5 class="modal-title">{{ header }}</h5>
-                    <button type="button" aria-label="Close" class="close" @click.stop.prevent="closeDialog">×</button>
-                  </header>
-                  <div class="modal-body" style="text-align:center;">
-                    <span class="modal-title" :style="styleMessage">{{ message }}</span>
-                    <b-row style="margin-top: 15px;">
-                      <b-col align="right">
-
-                    <b-btn class="gray" @click.stop.prevent="onClickCancel">ยกเลิก</b-btn>
-                      </b-col>
-                      <b-col align="left">
-                    <b-btn class="blue" @click.stop.prevent="onClickConfirm">ยืนยัน</b-btn></b-col>
-                    <!-- <button class="blue" @click.stop.prevent="closeDialog" style="display: block; margin: 0 auto;width:80px;">OK</button> -->
-                    </b-row>
-                  </div>
+  <div v-show="showWindow">
+    <div
+      role="dialog"
+      class="modal d-block"
+      style="background:rgba(0,0,0,0.3);padding:0px 40px;z-index:999999;"
+    >
+      <div
+        class="modal-dialog modal-md modal-dialog-centered"
+        style="width:400px;"
+      >
+        <div
+          tabindex="-1"
+          role="document"
+          class="modal-content"
+        >
+          <header class="modal-header">
+            <h5 class="modal-title">{{ header }}</h5>
+            <button
+              type="button"
+              aria-label="Close"
+              class="close"
+              @click.stop.prevent="closeDialog"
+            >×</button>
+          </header>
+          <div
+            class="modal-body"
+            style="text-align:center;"
+          >
+            <div
+              class="d-flex justify-content-center"
+              style="min-height: 60px"
+            >
+              <div
+                class="align-self-center"
+                align="center"
+              >
+            <span
+              class="modal-title"
+              :style="styleMessage"
+            >{{ message }}</span>
               </div>
+            </div>
+            <!-- <b-row style="margin-top: 15px;">
+              <b-col align="right">
+                <b-btn
+                  class="blue"
+                  @click.stop.prevent="onClickConfirm"
+                >ยืนยัน</b-btn>
+              </b-col>
+              <b-col align="left">
+
+                <b-btn
+                  class="gray"
+                  @click.stop.prevent="onClickCancel"
+                >ยกเลิก</b-btn>
+              </b-col>
+            </b-row> -->
           </div>
+
+          <div class="modal-footer">
+            <b-btn
+              class="blue"
+              @click.stop.prevent="onClickConfirm"
+            >ยืนยัน</b-btn>
+            <b-btn
+              class="gray"
+              @click.stop.prevent="onClickCancel"
+            >ยกเลิก</b-btn>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -107,8 +156,13 @@ export default {
   padding: 10px 20px;
 }
 * {
-  font-family: "Roboto",sans-serif;
+  font-family: "Roboto", sans-serif;
   font-size: 14px;
   font-weight: 600;
+}
+.span-message {
+  /* min-height: 100px; */
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 </style>

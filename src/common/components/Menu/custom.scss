@@ -1,0 +1,19 @@
+.left-menu {
+  z-index: 3;
+  position: fixed;
+  width: 50px;
+  height: calc(100vh - 70px);
+  right: auto;
+  left: 0px;
+  top: 70px;
+  margin: 0px;
+  background: #5f616b;
+}
+
+
+.menu-bottom {
+  font-weight: bold;
+  font-size: 20px;
+  color: #fff;
+  width: calc(100vw (30%- 40px));
+}

@@ -37,19 +37,30 @@ const category = [{
   }
 ]
 
-const activeStatus = [{
-  value: "0",
-  text: "รอการอนุมัติการเพิ่มข้อมูล"
-}, {
-  value: "1",
-  text: "รอการอนุมัติการแก้ไขข้อมูล"
-}, {
-  value: "2",
-  text: "รอการอนุมัติการลบข้อมูล"
-}, {
-  value: "3",
-  text: "อนุมัติการแสดงข้อมูล"
-}]
+const genderMember = [{
+    value: null,
+    text: "กรุณาเลือกเพศของท่าน",
+    disabled: true
+  },
+  {
+    value: "0",
+    text: "ชาย"
+  },
+  {
+    value: "1",
+    text: "ฆญิง"
+  },
+]
+
+const activeSratus = [{
+    value: "0",
+    text: "รอการอนุมัติ"
+  },
+  {
+    value: "1",
+    text: "อนุมัติให้แสดงข้อมูลแล้ว"
+  }
+];
 
 const message_error = {
   MSG_ERROR_START_DATE_END_DATE_TRANSACTION_LOG: "Start Time must less than End Time.",
@@ -59,28 +70,33 @@ const message_error = {
     MSG_ERROR_UPLOAD_IMAGE: 'The upload file can be only .jpg and .png',
     MSG_PLEASE_SELECT_ITEM: 'Please select the item that you want.'
   },
-  BOT_CONFIG: {
-    MSG_REQUIRED_MENU: 'Please input at least 1 menu.',
+  REGISTER: {
+    MSG_PASSWORD_NOT_MATCH: 'รหัสที่ระบุไม่ตรงกัน',
   }
 };
 
 const message_success = {
-  MSG_UPDATE_PASSWORD_SUCCESS: 'Password Updated.'
+
 }
 const message_confirm_header = {
-  MSG_CONFIRM_ADD_CONTENT: "ยืนยันการบันทึกข้อมูล"
+  MSG_CONFIRM_ADD_CONTENT: "ยืนยันการบันทึกข้อมูล",
+  MSG_CONFIRM_APPROVE_CONTENT: "ยืนยันอนุมัติให้แสดงข้อมูล"
 };
 
 const message_confirm = {
   MSG_CONFIRM_DELETE_MENU_LIST: "Do you want to delete this menu?",
   MSG_CONFIRM_DELETE_CONFIGURATION: "Do you want to delete this configuration?",
   MSG_CONFIRM_DELETE_ADAPTERBOT: "Do you want to delete this bot adapter?",
-  MSG_CONFIRM_ADD_CONTENT: "เมื่อบันทึกข้อมูลแล้วจะไม่สามารถแก้ไขได้ จนกว่าผู้ดูแลระบบจะอนุมัติการแสดงข้อมูล"
+  MSG_CONFIRM_ADD_CONTENT: "เมื่อบันทึกข้อมูลแล้วจะไม่สามารถแก้ไขได้ จนกว่าผู้ดูแลระบบจะอนุมัติการแสดงข้อมูล",
+  MSG_CONFIRM_EDIT_CONTENT: "ต้องการบันทึกข้อมูลจริงหรือไม่",
+  MSG_CONFIRM_APPROVE_CONTENT: "เมื่อยืนยันแล้ว ข้อมูลนี้จะถูดแสดงทันที",
+  MSG_CONFIRM_APPROVE_CONTENT: "เมื่อยืนยันแล้ว จะไม่สามารถแก้ไขได้",
 };
 
 export default {
+  GENDER_MEMBER: genderMember,
   CATEGORY: category,
-  ACTIVE_STATUS: activeStatus,
+  ACTIVE_STATUS: activeSratus,
   MSG_ERROR: message_error,
   MSG: message_success,
   MSG_CONFIRM: message_confirm,

@@ -184,6 +184,16 @@
   white-space: nowrap;
 }
 
+.td-27 {
+  word-break: break-word;
+  width: 27vw;
+  max-width: 27vw;
+  min-width: 27vw;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap;
+}
+
 .td-28 {
   word-break: break-word;
   width: 28vw;
@@ -245,12 +255,33 @@
   white-space: nowrap;
 }
 
+.td-38 {
+  word-break: break-word;
+  width: 38vw;
+  max-width: 38vw;
+  min-width: 38vw;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap;
+}
+
+
 
 .td-40 {
   word-break: break-word;
   width: 40vw;
   max-width: 40vw;
   min-width: 40vw;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap;
+}
+
+.td-41 {
+  word-break: break-word;
+  width: 41vw;
+  max-width: 41vw;
+  min-width: 41vw;
   text-overflow: ellipsis !important;
   overflow: hidden !important;
   white-space: nowrap;
@@ -491,6 +522,17 @@ th.td-26 {
   white-space: nowrap;
 }
 
+th.td-27 {
+  word-break: break-word;
+  width: 27vw;
+  max-width: 27vw;
+  min-width: 27vw;
+  text-align: center;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap;
+}
+
 th.td-28 {
   word-break: break-word;
   width: 28vw;
@@ -558,11 +600,35 @@ th.td-35 {
 }
 
 
+th.td-38 {
+  word-break: break-word;
+  width: 38vw;
+  max-width: 38vw;
+  min-width: 38vw;
+  text-align: center;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap;
+}
+
+
+
 th.td-40 {
   word-break: break-word;
   width: 40vw;
   max-width: 40vw;
   min-width: 40vw;
+  text-align: center;
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  white-space: nowrap;
+}
+
+th.td-41 {
+  word-break: break-word;
+  width: 41vw;
+  max-width: 41vw;
+  min-width: 41vw;
   text-align: center;
   text-overflow: ellipsis !important;
   overflow: hidden !important;
