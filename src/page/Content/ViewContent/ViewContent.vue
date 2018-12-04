@@ -32,98 +32,199 @@
             </router-link>
           </div>
 
-          <b-form-group
-            :label="formContent.nameContent.label"
-            v-show="formContent.nameContent.show"
-          >
-            <b-form-input
-              v-model="formContent.nameContent.value"
-              :type="formContent.nameContent.type"
-              :placeholder="formContent.nameContent.placeholder"
-              @keypress.native="validateText($event,formContent.nameContent.validateType)"
-              :state="formContent.nameContent.state"
-              :disabled="formContent.nameContent.disabled"
-            />
-            <!-- {{formContent.nameContent.validateType}} -->
-          </b-form-group>
-
-          <b-form-group
-            :label="formContent.idCategory.label"
-            v-show="formContent.idCategory.show"
-          >
-            <b-form-select
-              v-model="formContent.idCategory.value"
-              :options="optionsCategory"
-              :state="formContent.idCategory.state"
-              :disabled="formContent.idCategory.disabled"
-            />
-          </b-form-group>
-
-          <b-form-group
-            :label="formContent.imageContent.label"
-            v-show="formContent.imageContent.show"
-          >
-            <div
-              v-show="status == 'update'"
-              style="width: 100%;"
-              align="center"
+          <b-tabs>
+            <b-tab
+              title="ข้อมูลเนื้อหา"
+              active
             >
-              <img
-                :src="setShowImageContent(formContent.imageContent.value)"
-                alt=""
-                style="max-height: 400px;"
+              <br>
+              <b-form-group
+                :label="formContent.nameContent.label"
+                v-show="formContent.nameContent.show"
               >
-            </div>
+                <b-form-input
+                  v-model="formContent.nameContent.value"
+                  :type="formContent.nameContent.type"
+                  :placeholder="formContent.nameContent.placeholder"
+                  @keypress.native="validateText($event,formContent.nameContent.validateType)"
+                  :state="formContent.nameContent.state"
+                  :disabled="formContent.nameContent.disabled"
+                />
+                <!-- {{formContent.nameContent.validateType}} -->
+              </b-form-group>
 
-          </b-form-group>
+              <b-form-group
+                :label="formContent.idCategory.label"
+                v-show="formContent.idCategory.show"
+              >
+                <b-form-select
+                  v-model="formContent.idCategory.value"
+                  :options="optionsCategory"
+                  :state="formContent.idCategory.state"
+                  :disabled="formContent.idCategory.disabled"
+                />
+              </b-form-group>
 
-          <b-form-group
-            :label="formContent.urlContent.label"
-            v-show="formContent.urlContent.show"
-          >
-            <a
-              target="_blank"
-              :href="setShowFileVideoContent(formContent.urlContent.value)"
-            >ดาวน์โหลด {{formContent.urlContent.label}}</a>
-          </b-form-group>
+              <b-form-group
+                :label="formContent.imageContent.label"
+                v-show="formContent.imageContent.show"
+              >
+                <div
+                  v-show="status == 'update'"
+                  style="width: 100%;"
+                  align="center"
+                >
+                  <img
+                    :src="setShowImageContent(formContent.imageContent.value)"
+                    alt=""
+                    style="max-height: 400px;"
+                  >
+                </div>
 
-          <b-form-group
-            :label="formContent.fileEbookContent.label"
-            v-show="formContent.fileEbookContent.show"
-          >
-            <a
-              target="_blank"
-              :href="setShowFileEbookContent(formContent.fileEbookContent.value)"
-            >ดาวน์โหลด {{formContent.fileEbookContent.label}}</a>
-          </b-form-group>
+              </b-form-group>
 
-          <b-form-group
-            :label="formContent.scriptContent.label"
-            v-show="formContent.scriptContent.show"
-          >
-            <b-form-input
-              v-model="formContent.scriptContent.value"
-              :type="formContent.scriptContent.type"
-              :placeholder="formContent.scriptContent.placeholder"
-              @keypress.native="validateText($event,formContent.scriptContent.validateType)"
-              :state="formContent.scriptContent.state"
-              :disabled="formContent.scriptContent.disabled"
-            />
-          </b-form-group>
+              <b-form-group
+                :label="formContent.urlContent.label"
+                v-show="formContent.urlContent.show"
+              >
+                <a
+                  target="_blank"
+                  :href="setShowFileVideoContent(formContent.urlContent.value)"
+                >ดาวน์โหลด {{formContent.urlContent.label}}</a>
+              </b-form-group>
 
-          <b-form-group
-            :label="formContent.detailContent.label"
-            v-show="formContent.detailContent.show"
-          >
-            <ckeditor
-              type="classic"
-              v-model="formContent.detailContent.value"
-              :upload-adapter="UploadAdapter"
-              id="ck-create-update-content"
-              :state="formContent.detailContent.state"
-              :readonly="true"
-            ></ckeditor>
-          </b-form-group>
+              <b-form-group
+                :label="formContent.fileEbookContent.label"
+                v-show="formContent.fileEbookContent.show"
+              >
+                <a
+                  target="_blank"
+                  :href="setShowFileEbookContent(formContent.fileEbookContent.value)"
+                >ดาวน์โหลด {{formContent.fileEbookContent.label}}</a>
+              </b-form-group>
+
+              <b-form-group
+                :label="formContent.scriptContent.label"
+                v-show="formContent.scriptContent.show"
+              >
+                <b-form-input
+                  v-model="formContent.scriptContent.value"
+                  :type="formContent.scriptContent.type"
+                  :placeholder="formContent.scriptContent.placeholder"
+                  @keypress.native="validateText($event,formContent.scriptContent.validateType)"
+                  :state="formContent.scriptContent.state"
+                  :disabled="formContent.scriptContent.disabled"
+                />
+              </b-form-group>
+
+              <b-form-group
+                :label="formContent.detailContent.label"
+                v-show="formContent.detailContent.show"
+              >
+                <ckeditor
+                  type="classic"
+                  v-model="formContent.detailContent.value"
+                  :upload-adapter="UploadAdapter"
+                  id="ck-create-update-content"
+                  :state="formContent.detailContent.state"
+                  :readonly="true"
+                ></ckeditor>
+              </b-form-group>
+            </b-tab>
+            <b-tab title="ข้อมูลผู้สร้างเนื้อหา">
+              <br>
+
+              <div
+                v-show="status == 'update'"
+                style="width: 100%;"
+                align="center"
+              >
+                <img
+                  :src="setShowImageMember(ComputedMemberMakeData.imageMember)"
+                  alt=""
+                  style="max-height: 200px;"
+                >
+              </div>
+
+              <b-form-group
+                label="ชื่อ - นามสกุล"
+                v-show="true"
+              >
+                <b-form-input
+                  v-model="ComputedMemberMakeData.nameMember"
+                  type="text"
+                  placeholder="ชื่อ - นามสกุล"
+                  :readonly="true"
+                  :disabled="true"
+                />
+              </b-form-group>
+
+              <b-form-group
+                label="เพศ"
+                v-show="true"
+              >
+                <b-form-select
+                  v-model="ComputedMemberMakeData.genderMember"
+                  :options="optionsGenderMember"
+                  :readonly="true"
+                  :disabled="true"
+                />
+              </b-form-group>
+
+              <b-form-group
+                label="วัน/เดิอน/ปี เกิด"
+                v-show="true"
+              >
+                <b-form-input
+                  v-model="ComputedMemberMakeData.birthdayMember"
+                  type="date"
+                  placeholder="วัน/เดิอน/ปี เกิด"
+                  :readonly="true"
+                  :disabled="true"
+                />
+              </b-form-group>
+
+              <b-form-group
+                label="อีเมล์"
+                v-show="true"
+              >
+                <b-form-input
+                  v-model="ComputedMemberMakeData.emailMember"
+                  type="email"
+                  placeholder="อีเมล์"
+                  :readonly="true"
+                  :disabled="true"
+                />
+              </b-form-group>
+
+              <b-form-group
+                label="เบอร์โทรศัพท์"
+                v-show="true"
+              >
+                <b-form-input
+                  v-model="ComputedMemberMakeData.telMember"
+                  type="text"
+                  placeholder="โทรศัพท์"
+                  :readonly="true"
+                  :disabled="true"
+                />
+              </b-form-group>
+
+              <b-form-group
+                label="ที่อยู่"
+                v-show="true"
+              >
+                <b-form-input
+                  v-model="ComputedMemberMakeData.addressMember"
+                  type="text"
+                  placeholder="ที่อยู่"
+                  :readonly="true"
+                  :disabled="true"
+                />
+              </b-form-group>
+
+            </b-tab>
+          </b-tabs>
 
         </b-form>
       </div>
@@ -154,7 +255,10 @@ export default {
   props: {},
   data() {
     return {
+      optionsGenderMember: globalUtil.VARIABLES.GENDER_MEMBER,
+      MemberMakeData: {},
       idContent: NaN,
+      idMemberMake: NaN,
       activeStatus: NaN,
       status: "update",
       formContent: {
@@ -277,8 +381,19 @@ export default {
       }
     };
   },
-  computed: {},
+  computed: {
+    ComputedMemberMakeData() {
+      return this.MemberMakeData;
+    }
+  },
   methods: {
+    setShowImageMember(urlImage) {
+      if (urlImage != "" && urlImage != undefined) {
+        return globalUtil.SERVICES.URI_IMAGE + "profile/member/" + urlImage;
+      } else {
+        return "http://via.placeholder.com/500x500?text=No%20image";
+      }
+    },
     setShowFileVideoContent(urlVideo) {
       return globalUtil.SERVICES.URI_VIDEO + urlVideo;
     },
@@ -393,6 +508,33 @@ export default {
           // end process after validateResponse
         }.bind(this)
       );
+    },
+    requestFindMemberById() {
+      console.log(
+        TAG + "requestFindMemberById start",
+        globalUtil.SERVICES.MEMBER.URL_FIND_MEMBER_BY_ID
+      );
+
+      uiUtil.bus.post(constantUtil.EVENT.COMMMON.GLOBALLOADING);
+      const bodyParams = {
+        idMember: this.idMemberMake
+      };
+      const call = apiUtil.callService.doPost(
+        globalUtil.SERVICES.MEMBER.URL_FIND_MEMBER_BY_ID,
+        bodyParams
+      );
+
+      apiUtil.callService.validateResponse(
+        call,
+        function(response) {
+          console.log(TAG + "requestFindMemberById success");
+          // process after validateResponse
+
+          this.MemberMakeData = response.resultData;
+
+          // end process after validateResponse
+        }.bind(this)
+      );
     }
   },
   created() {
@@ -436,10 +578,12 @@ export default {
         this.formContent.scriptContent.value = DataForViewContent.scriptContent;
         this.formContent.detailContent.value = DataForViewContent.detailContent;
         this.idContent = DataForViewContent.idContent;
+        this.idMemberMake = DataForViewContent.idMember;
 
+        this.requestFindMemberById();
         // this.onChangeCbbIdCategory();
       } else {
-          this.$router.push("/ManagementContent");
+        this.$router.push("/ManagementContent");
       }
     }
   },

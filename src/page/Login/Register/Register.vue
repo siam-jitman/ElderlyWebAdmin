@@ -68,6 +68,19 @@
               </b-form-group>
 
               <b-form-group
+                label="รูปภาพโปรไฟล์"
+                v-show="true"
+              >
+                <b-form-file
+                  ref="imageMember"
+                  v-model="formRegis.imageMember"
+                  placeholder="เลือกรูปภาพโปรไฟล์ของท่าน"
+                  :state="formRegis.state.imageMember"
+                  required
+                />
+              </b-form-group>
+
+              <b-form-group
                 label="ชื่อ - นามสกุล"
                 v-show="true"
               >
@@ -166,6 +179,7 @@ export default {
     return {
       optionsGenderMember: globalUtil.VARIABLES.GENDER_MEMBER,
       formRegis: {
+        imageMember: null,
         emailMember: "",
         passwordMember: "",
         confirmPasswordMember: "",
@@ -175,6 +189,7 @@ export default {
         birthdayMember: "",
         telMember: "",
         state: {
+          imageMember: null,
           emailMember: null,
           passwordMember: null,
           confirmPasswordMember: null,
@@ -200,7 +215,6 @@ export default {
             globalUtil.VARIABLES.MSG_ERROR.REGISTER.MSG_PASSWORD_NOT_MATCH
           );
         } else {
-
           let param = {
             emailMember: this.formRegis.emailMember,
             usernameMember: this.formRegis.emailMember,
@@ -212,12 +226,13 @@ export default {
             telMember: this.formRegis.telMember
           };
 
-          this.requestRegisterMember(param);
+          this.requestUploadImageProfile(param);
         }
       });
     },
     closeDialog() {
       this.formRegis = {
+        imageMember: null,
         emailMember: "",
         passwordMember: "",
         confirmPasswordMember: "",
@@ -227,6 +242,7 @@ export default {
         birthdayMember: "",
         telMember: "",
         state: {
+          imageMember: null,
           emailMember: null,
           passwordMember: null,
           confirmPasswordMember: null,
@@ -238,6 +254,8 @@ export default {
         }
       };
       this.showModel = !this.showModel;
+
+      this.$refs.imageMember.reset();
     },
     // ********** methods call service **********//
     requestRegisterMember(bodyParams) {
@@ -262,6 +280,38 @@ export default {
           this.closeDialog();
           this.requestLogin(bodyParams.emailMember, bodyParams.passwordMember);
 
+          // end process after validateResponse
+        }.bind(this)
+      );
+    },
+    requestUploadImageProfile(param) {
+      console.log(
+        TAG + "requestUploadImageProfile start",
+        globalUtil.SERVICES.REGISTER_MEMBER.URL_UPLOAD_IMAGE_PROFILE
+      );
+
+      // let valueformContent = dataUtil.getValuesForm(this.formContent);
+
+      uiUtil.bus.post(constantUtil.EVENT.COMMMON.GLOBALLOADING);
+
+      const body = new FormData();
+      console.log("imageMember => ", this.$refs.imageMember);
+      body.append("imageMember", this.$refs.imageMember.selectedFile);
+
+      const call = apiUtil.callService.doPostFormData(
+        globalUtil.SERVICES.REGISTER_MEMBER.URL_UPLOAD_IMAGE_PROFILE,
+        body
+      );
+
+      apiUtil.callService.validateResponse(
+        call,
+        function(response) {
+          console.log(TAG + "requestUploadImageProfile success");
+          // process after validateResponse
+          this.requestRegisterMember({
+            ...param,
+            imageMember: response.resultData
+          });
           // end process after validateResponse
         }.bind(this)
       );

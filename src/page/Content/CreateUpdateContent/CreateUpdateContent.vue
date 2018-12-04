@@ -209,6 +209,7 @@ export default {
   props: {},
   data() {
     return {
+      idContent: NaN,
       activeStatus: 0,
       status: "create",
       formContent: {
@@ -374,16 +375,20 @@ export default {
       var validateForm = validateUtil.validateForm(this.formContent);
       if (validateForm) {
         var callBackFn = function() {
-          if (valueForm.idCategory == "4") {
+          if (
+            valueForm.idCategory == "4" &&
+            this.$refs.fileEbookContent.selectedFile != null
+          ) {
             this.requestUploadEBook();
           } else if (
-            valueForm.idCategory == "1" ||
-            valueForm.idCategory == "7" ||
-            valueForm.idCategory == "8"
+            (valueForm.idCategory == "1" ||
+              valueForm.idCategory == "7" ||
+              valueForm.idCategory == "8") &&
+            this.$refs.urlContent.selectedFile != null
           ) {
             this.requestUploadVideo();
           } else {
-            this.requestAddContentByIdMember();
+            this.requestEditContentByIdMember();
           }
         }.bind(this);
         uiUtil.bus.post(
@@ -514,6 +519,74 @@ export default {
       }, 0);
     },
     // ********** methods call service **********//
+    requestEditContentByIdMember(file) {
+      if (file == undefined || file == null) {
+        file = "";
+      }
+      console.log(
+        TAG + "requestEditContentByIdMember start",
+        globalUtil.SERVICES.CONTENT.URL_EDIT_CONTENT_BY_ID_MEMBER
+      );
+
+      let valueformContent = dataUtil.getValuesForm(this.formContent);
+
+      uiUtil.bus.post(constantUtil.EVENT.COMMMON.GLOBALLOADING);
+
+      const body = new FormData();
+      body.append(
+        "imageContent",
+        typeof this.formContent.imageContent.value == "string" ||
+          this.formContent.imageContent.value == null ||
+          this.formContent.imageContent.value == undefined
+          ? this.$route.params.DataForViewContent.imageContent
+          : this.formContent.imageContent.value
+      );
+
+      if (this.formContent.idCategory.value == "4") {
+        body.append(
+          "requestBody",
+          JSON.stringify({
+            ...valueformContent,
+            idContent: this.idContent,
+            idMember: this.$store.getters.getMemberData.idMember,
+            urlContent: "",
+            fileEbookContent:
+              file == ""
+                ? this.$route.params.DataForViewContent.fileEBookContent
+                : file
+          })
+        );
+      } else {
+        body.append(
+          "requestBody",
+          JSON.stringify({
+            ...valueformContent,
+            idContent: this.idContent,
+            idMember: this.$store.getters.getMemberData.idMember,
+            urlContent:
+              file == ""
+                ? this.$route.params.DataForViewContent.urlContent
+                : file,
+            fileEbookContent: ""
+          })
+        );
+      }
+
+      const call = apiUtil.callService.doPostFormData(
+        globalUtil.SERVICES.CONTENT.URL_EDIT_CONTENT_BY_ID_MEMBER,
+        body
+      );
+
+      apiUtil.callService.validateResponse(
+        call,
+        function(response) {
+          console.log(TAG + "requestEditContentByIdMember success");
+          // process after validateResponse
+          this.$router.push("/Content");
+          // end process after validateResponse
+        }.bind(this)
+      );
+    },
     requestAddContentByIdMember(file) {
       if (file == undefined || file == null) {
         file = "";
@@ -591,7 +664,11 @@ export default {
         function(response) {
           console.log(TAG + "requestAddContentByIdMember success");
           // process after validateResponse
-          this.requestAddContentByIdMember(response.resultData);
+          if (this.status == "create") {
+            this.requestAddContentByIdMember(response.resultData);
+          } else {
+            this.requestEditContentByIdMember(response.resultData);
+          }
           // end process after validateResponse
         }.bind(this)
       );
@@ -620,7 +697,11 @@ export default {
         function(response) {
           console.log(TAG + "requestUploadVideo success");
           // process after validateResponse
-          this.requestAddContentByIdMember(response.resultData);
+          if (this.status == "create") {
+            this.requestAddContentByIdMember(response.resultData);
+          } else {
+            this.requestEditContentByIdMember(response.resultData);
+          }
           // end process after validateResponse
         }.bind(this)
       );
@@ -671,6 +752,8 @@ export default {
         this.formContent.detailContent.value = DataForViewContent.detailContent;
 
         this.activeStatus = DataForViewContent.activeStatus;
+
+        this.idContent = DataForViewContent.idContent;
 
         this.onChangeCbbIdCategory();
       } else {

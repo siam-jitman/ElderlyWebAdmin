@@ -48,7 +48,7 @@ const genderMember = [{
   },
   {
     value: "1",
-    text: "ฆญิง"
+    text: "หญิง"
   },
 ]
 
